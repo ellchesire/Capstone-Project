@@ -9,7 +9,6 @@ import time
 chessboard = (5,5)
 
 
-
 def triangulate_points(horizontal_indices, vertical_indices, cam_mtx, proj_mtx, R, T):
     height, width = horizontal_indices.shape
 
