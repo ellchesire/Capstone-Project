@@ -5,6 +5,7 @@ from decode_gray import  decoding_main
 import matplotlib.pyplot as plt
 import open3d as o3d
 import time
+import os
 
 chessboard = (5,5)
 
@@ -34,12 +35,20 @@ def triangulate_points(horizontal_indices, vertical_indices, cam_mtx, proj_mtx, 
 
     return np.array(points_3D).reshape((height, width, 3))
 
-def main():
-    
-    now = time.time()
+
+def calculate_depth_map(files):
+
+
+    f = open('camera_calibration', 'rb')
+    cam_mtx = pickle.load(f)
+    f.close()
+
+    f = open('projector_calibration', 'rb')
+    proj_mtx = pickle.load(f)
+    f.close()
+
     objp = np.zeros((chessboard[0] * chessboard[1], 3), np.float32)
     objp[:, :2] = np.mgrid[0:chessboard[0], 0:chessboard[1]].T.reshape(-1, 2)
-
 
     objpoints = []
     objpoints.append(objp)
@@ -47,9 +56,9 @@ def main():
     f = open('camera_calibration', 'rb')
     cam_mtx = pickle.load(f)
     cam_dist = pickle.load(f)
-    
+
     f.close()
-    
+
     f = open('cam_img', 'rb')
     cam_imgpoints = pickle.load(f)
     f.close()
@@ -58,7 +67,7 @@ def main():
     proj_mtx = pickle.load(f)
     proj_dist = pickle.load(f)
     f.close()
-    
+
     f = open('proj_img', 'rb')
     proj_imgpoints = pickle.load(f)
     f.close()
@@ -75,14 +84,12 @@ def main():
     gray = cv2.cvtColor(img_corner, cv2.COLOR_BGR2GRAY)
     gray = cv2.resize(gray, (width_final, height_final))
 
-    # print(len(cam_imgpoints), len(proj_imgpoints))
-
     ret, _, _, _, _, R, T, E, F = cv2.stereoCalibrate(
         objpoints,  # 3D object points
         cam_imgpoints,  # 2D points in camera
         proj_imgpoints,  # 2D points in proj
         cam_mtx,  # camera matrix
-        cam_dist,  #  camera distortion coefficients
+        cam_dist,  # camera distortion coefficients
         proj_mtx,  # proj matrix
         proj_dist,  # proj distortion coefficients
         gray.shape[::-1],  # Image size (width, height)
@@ -90,23 +97,15 @@ def main():
         flags=0
     )
 
-    hori, veri = decoding_main()
+
+    hori, veri = decoding_main(files)
 
     points = triangulate_points(hori, veri, cam_mtx, proj_mtx, R, T)
 
-    depth_map = points[:, :, 2]
-    
-    end = time.time()
-    elapsed_time = end - now
-    print(elapsed_time)
-
-    plt.figure(figsize=(8, 6))
-    plt.imshow(depth_map, cmap='jet', interpolation='nearest')
-    plt.colorbar(label="depth")
-    plt.title("depth map")
-    plt.show()
+    return points
 
 
 
-if __name__ == '__main__':
-    main()
+
+# if __name__ == '__main__':
+#     main()

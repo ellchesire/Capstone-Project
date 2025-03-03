@@ -4,7 +4,7 @@ import os
 
 model = YOLO("model/yolo11l.pt")  
 
-input_dir = 'input' # Directory containing the input images
+input_dir = 'old_pictures/input'  # Directory containing the input images
 output_dir = 'output'  # Directory to save the cropped images
 
 # Get list of all images in the input directory

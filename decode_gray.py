@@ -106,16 +106,12 @@ def decode_gray_otsu(test_images, height, width):
     return binary_sequence
 
 
-def decoding_main():
+def decoding_main(filename):
+
     for x in range(M*2):
-        #filename = f"feb_six/IMG_{x+4577}.JPG"
-        #filename = f"feb_12th/IMG_{x+4711}.JPG"
-        # if filename == "feb_six/IMG_4582.JPG":
-        #     continue
-        #filename = f"gray_code_images/IMG_{x+4527}.JPG"
-        #filename = f"feb11_pictures/IMG_{x+4678}.JPG"
-        filename = f"star_truck/IMG_{x+4759}.JPG"
-        img = cv2.imread(filename)
+        #filename = f"old_pictures/feb_12th/IMG_{x+4711}.JPG"
+        #filename = f"old_pictures/star_truck/IMG_{x+4759}.JPG"
+        img = cv2.imread(filename[x])
         if img is None:
             raise FileNotFoundError(f"Image not found: {filename}")
         img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -133,13 +129,14 @@ def decoding_main():
     binary_code_hori = decode_gray_otsu(test_images[0:M-1], height_final, width_final)
     binary_code_veri = decode_gray_otsu(test_images[M:-1], height_final, width_final)
 
-    decoded_combine = np.stack((binary_code_hori, binary_code_veri), axis=-1)
+    del img
+    del img_grey
+    test_images.clear()
 
-
+    # decoded_combine = np.stack((binary_code_hori, binary_code_veri), axis=-1)
     # visualize_projector_mapping(decoded_combine, axis = 'x')
     # visualize_projector_mapping(decoded_combine, axis='y')
 
 
-    return binary_code_hori, binary_code_hori
+    return binary_code_hori, binary_code_veri
 
-#decoding_main()
