@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import pickle
 from decode_gray import  decoding_main
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import open3d as o3d
 import time
@@ -37,15 +39,6 @@ def triangulate_points(horizontal_indices, vertical_indices, cam_mtx, proj_mtx, 
 
 
 def calculate_depth_map(files):
-
-
-    f = open('camera_calibration', 'rb')
-    cam_mtx = pickle.load(f)
-    f.close()
-
-    f = open('projector_calibration', 'rb')
-    proj_mtx = pickle.load(f)
-    f.close()
 
     objp = np.zeros((chessboard[0] * chessboard[1], 3), np.float32)
     objp[:, :2] = np.mgrid[0:chessboard[0], 0:chessboard[1]].T.reshape(-1, 2)
@@ -111,6 +104,7 @@ def calculate_depth_map(files):
     plt.title("depth map")
     plt.savefig("depth_map_output.jpg")
     plt.close()
+
     return points
 
 
