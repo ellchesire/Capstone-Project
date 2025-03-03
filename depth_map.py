@@ -5,7 +5,7 @@ from decode_gray import  decoding_main
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import open3d as o3d
+#import open3d as o3d
 import time
 import os
 

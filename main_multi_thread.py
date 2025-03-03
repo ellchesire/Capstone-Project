@@ -1,7 +1,7 @@
 
 import time
 import threading
-import keyboard
+import keyboard 
 import matplotlib.pyplot as plt
 from autoCamera import capture
 import os
@@ -15,7 +15,7 @@ process_event = threading.Event()
 stop_event = threading.Event()
 
 def capture_images():
-    global graycode_files
+    global graycode_filess
     while not stop_event.is_set():
             print("Capturing")
             capture()

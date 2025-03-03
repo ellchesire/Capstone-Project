@@ -26,7 +26,7 @@ if __name__ == "__main__":
             graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
             time.sleep(0.5)
         if keyboard.is_pressed('s'):
-            print("Goodbye! fuck you dont come again")
+            print("Goodbye!")
             break
 
         elif len(os.listdir(filename)) != 0:
