@@ -12,23 +12,8 @@ from depth_map import calculate_depth_map
 
 #getting the images
 filename = "PHOTOS"
+real_filename = "real_images/first.jpg"
 graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
-
-f = open('camera_calibration', 'rb')
-cam_mtx = pickle.load(f)
-f.close()
-
-f = open('projector_calibration', 'rb')
-proj_mtx = pickle.load(f)
-f.close()
-
-f = open('extrinsic_matrix', 'rb')
-R_saved = pickle.load(f)
-T_saved = pickle.load(f)
-f.close()
-
-R_saved = np.ascontiguousarray(R_saved, dtype=np.float32)
-T_saved = np.ascontiguousarray(T_saved, dtype=np.float32)
 
 
 if __name__ == "__main__":
@@ -40,24 +25,29 @@ if __name__ == "__main__":
             capture()
             graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
             time.sleep(0.5)
+        if keyboard.is_pressed('s'):
+            print("Goodbye! fuck you dont come again")
+            break
 
         elif len(os.listdir(filename)) != 0:
 
             points = calculate_depth_map(graycode_files)
-            depth_map = points[:, :, 2]
-
-            plt.figure(figsize=(8, 6))
-            plt.imshow(depth_map, cmap='jet', interpolation='nearest')
-            plt.colorbar(label="depth")
-            plt.title("depth map")
-            plt.savefig("depth_map_output.jpg")
-            plt.show()
+            # depth_map = points[:, :, 2]
+            #
+            # plt.figure(figsize=(8, 6))
+            # plt.imshow(depth_map, cmap='jet', interpolation='nearest')
+            # plt.colorbar(label="depth")
+            # plt.title("depth map")
+            # plt.savefig("depth_map_output.jpg")
+            # plt.show()
+            img = cv2.imread(graycode_files[0])
+            cv2.imwrite(real_filename,img)
 
             for name in os.listdir(filename):
                 if name.endswith('.jpg'):
                     os.remove(os.path.join(filename, name))
                     print(f"Deleted: {name}")
         else:
-            print("Capture More Images")
+            print("No Images in Folder")
 
         time.sleep(0.1)

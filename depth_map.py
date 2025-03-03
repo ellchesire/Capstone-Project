@@ -102,6 +102,15 @@ def calculate_depth_map(files):
 
     points = triangulate_points(hori, veri, cam_mtx, proj_mtx, R, T)
 
+    #for multithreading
+    depth_map = points[:, :, 2]
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(depth_map, cmap='jet', interpolation='nearest')
+    plt.colorbar(label="depth")
+    plt.title("depth map")
+    plt.savefig("depth_map_output.jpg")
+    plt.close()
     return points
 
 
