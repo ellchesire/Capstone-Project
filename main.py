@@ -13,7 +13,7 @@ from depth_map import calculate_depth_map
 #getting the images
 filename = "PHOTOS"
 real_filename = "real_images/first.jpg"
-graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
+graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg") or img.endswith(".JPG")]
 
 
 if __name__ == "__main__":
@@ -30,7 +30,7 @@ if __name__ == "__main__":
             break
 
         elif len(os.listdir(filename)) != 0:
-
+            print("Processing")
             points = calculate_depth_map(graycode_files)
             # depth_map = points[:, :, 2]
             #

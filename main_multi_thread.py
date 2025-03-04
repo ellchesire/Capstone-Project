@@ -15,31 +15,30 @@ process_event = threading.Event()
 stop_event = threading.Event()
 
 def capture_images():
-    global graycode_filess
+    global graycode_files
     while not stop_event.is_set():
             print("Capturing")
             capture()
 
-            with graycode_lock:
-                graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
-                print(f"Captured {len(graycode_files)} images.")
+            
+            graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
             if len(graycode_files) == 16:
                 print("16 images captured, setting process event.")
                 process_event.set()
-                time.sleep(5)
+                time.sleep(6)
 
 
 
 def process_depth_map():
     global graycode_files
     while not stop_event.is_set():
-        process_event.wait(timeout=1)
-        with graycode_lock:
-            if len(graycode_files) == 16:
-                print("Processing")
-                calculate_depth_map(graycode_files)
-                print("Done Processing")
-                process_event.clear()
+        process_event.wait()
+        
+        if len(graycode_files) == 16:
+            print("Processing")
+            calculate_depth_map(graycode_files)
+            print("Done Processing")
+            process_event.clear()
 
         time.sleep(0.1)
 

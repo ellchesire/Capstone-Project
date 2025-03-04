@@ -40,7 +40,6 @@ def capture():
     cap.release()
     cv2.destroyAllWindows()
 
-capture()
 
 # MAIN FUNCTION
 # if __name__ == "__main__":

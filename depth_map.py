@@ -102,7 +102,7 @@ def calculate_depth_map(files):
     plt.imshow(depth_map, cmap='jet', interpolation='nearest')
     plt.colorbar(label="depth")
     plt.title("depth map")
-    plt.savefig("depth_map_output.jpg")
+    plt.savefig("depth_map_output.jpg", dpi = 600)
     plt.close()
 
     return points
