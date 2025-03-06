@@ -7,6 +7,7 @@ import os
 import time
 from depth_map import calculate_depth_map
 import threading
+from tkinter import messagebox
 
 class SimpleVideoImageDisplayApp:
     def __init__(self, root, filename):
@@ -15,8 +16,7 @@ class SimpleVideoImageDisplayApp:
 
         self.filename = filename
 
-        #locks
-        self.graycode_lock = threading.Lock()
+        #events
         self.process_event = threading.Event()
         self.stop_event = threading.Event()
 
@@ -33,6 +33,33 @@ class SimpleVideoImageDisplayApp:
 
         self.image_panel = tk.Label(root, **frame_style)
         self.image_panel.grid(row=1, column=1, sticky="nsew", padx=20, pady=20)
+
+        #adding a button
+        self.button = tk.Button(root,
+                           text="Save Plot",
+                           command=self.button_clicked,
+                           activebackground="green",
+                           activeforeground="white",
+                           anchor="center",
+                           bd=3,
+                           bg="lightgray",
+                           cursor="hand2",
+                           disabledforeground="gray",
+                           fg="black",
+                           font=("Arial", 12),
+                           height=2,
+                           highlightbackground="black",
+                           highlightcolor="green",
+                           highlightthickness=2,
+                           justify="center",
+                           overrelief="raised",
+                           padx=10,
+                           pady=5,
+                           width=15,
+                           wraplength=100)
+
+        self.button.grid(row=2, column=1, sticky="se", padx=20, pady=20)
+
 
         # Adding titles
         self.video_title = tk.Label(root, text="Video", font=title_font, bg=title_bg, fg=title_fg)
@@ -61,8 +88,6 @@ class SimpleVideoImageDisplayApp:
         # Start threads
         self.capture_thread.start()
         self.process_thread.start()
-
-
 
 
 
@@ -121,13 +146,27 @@ class SimpleVideoImageDisplayApp:
                 self.load_image()
                 self.process_event.clear()
 
+    def button_clicked(self):
+
+        img = Image.open(self.image_path)
+        user_dir = os.path.expanduser("~")
+        save_path = os.path.join(user_dir, f"Downloads/SavedPlot_{time.time()}.jpg")
+
+
+        try:
+            img.save(save_path, "JPEG")
+            messagebox.showinfo("Success", f"Plot saved at:\n{save_path}")
+
+        except Exception as e:
+            # Show an error message if something goes wrong
+            messagebox.showerror("Error", f"Could not save Plot:\n{str(e)}")
 
 
 def main():
     filename = "PHOTOS"
 
     root = tk.Tk()
-    root.geometry("1280x500")  # Adjust the size of the window as needed
+    root.geometry("1280x600")  # Adjust the size of the window as needed
     app = SimpleVideoImageDisplayApp(root, filename)
 
     root.mainloop()
