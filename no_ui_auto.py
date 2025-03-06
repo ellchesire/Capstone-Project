@@ -8,7 +8,7 @@ import os
 from depth_map import calculate_depth_map
 
 # getting the images
-filename = "old_pictures/feb_12th"
+filename = "PHOTOS"
 graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
 graycode_lock = threading.Lock()
 process_event = threading.Event()

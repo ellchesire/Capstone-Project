@@ -17,13 +17,14 @@ def capture_images(cap, num_photos=16, interval=1, folder='captures'):
         
         time.sleep(interval)
 
-def capture():
+def capture(cap):
     bits = 16
     interval = 0
     second_interval = 8
 
+
+
     # Open the default camera
-    cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("Error: Could not open camera.")
         exit
@@ -37,8 +38,8 @@ def capture():
     print("Elapased Time: " + str(elapsed_time))
 
     # Free Camera Resources
-    cap.release()
-    cv2.destroyAllWindows()
+    #cap.release()
+    #cv2.destroyAllWindows()
 
 
 # MAIN FUNCTION
