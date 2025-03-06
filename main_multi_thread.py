@@ -8,7 +8,7 @@ import os
 from depth_map import calculate_depth_map
 
 # getting the images
-filename = "PHOTOS"
+filename = "old_pictures/feb_12th"
 graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
 graycode_lock = threading.Lock()
 process_event = threading.Event()
@@ -17,26 +17,31 @@ stop_event = threading.Event()
 def capture_images():
     global graycode_files
     while not stop_event.is_set():
+            
             print("Capturing")
             capture()
-
-            
+            process_event.set()
+            time.sleep(5)
             graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg")]
             if len(graycode_files) == 16:
                 print("16 images captured, setting process event.")
                 process_event.set()
-                time.sleep(6)
+                time.sleep(5)
 
 
 
 def process_depth_map():
     global graycode_files
     while not stop_event.is_set():
-        process_event.wait()
+        process_event.wait(timeout=1)
         
-        if len(graycode_files) == 16:
+        if len(graycode_files) == 16 or 1:
             print("Processing")
+            now = time.time()
             calculate_depth_map(graycode_files)
+            end = time.time()
+            elapsed_time = end - now
+            print(elapsed_time)
             print("Done Processing")
             process_event.clear()
 

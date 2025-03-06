@@ -2,7 +2,7 @@ import cv2
 import time
 import os
 
-def capture_images(cap, num_photos=16, interval=0, folder='captures'):
+def capture_images(cap, num_photos=16, interval=1, folder='captures'):
     os.makedirs(folder, exist_ok=True)  # Create folder if it doesn't exist
     
     for i in range(num_photos):

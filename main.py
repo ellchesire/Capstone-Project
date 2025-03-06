@@ -11,7 +11,8 @@ from depth_map import triangulate_points
 from depth_map import calculate_depth_map
 
 #getting the images
-filename = "PHOTOS"
+filename = "old_pictures/feb_12th"
+#filename = "PHOTOS"
 real_filename = "real_images/first.jpg"
 graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".jpg") or img.endswith(".JPG")]
 
@@ -31,7 +32,10 @@ if __name__ == "__main__":
 
         elif len(os.listdir(filename)) != 0:
             print("Processing")
+            now = time.time()
             points = calculate_depth_map(graycode_files)
+            elapstedtime = time.time() - now
+            print(elapstedtime)
             # depth_map = points[:, :, 2]
             #
             # plt.figure(figsize=(8, 6))
@@ -43,10 +47,10 @@ if __name__ == "__main__":
             img = cv2.imread(graycode_files[0])
             cv2.imwrite(real_filename,img)
 
-            for name in os.listdir(filename):
-                if name.endswith('.jpg'):
-                    os.remove(os.path.join(filename, name))
-                    print(f"Deleted: {name}")
+            # for name in os.listdir(filename):
+            #     if name.endswith('.jpg'):
+            #         os.remove(os.path.join(filename, name))
+            #         print(f"Deleted: {name}")
         else:
             print("No Images in Folder")
 
