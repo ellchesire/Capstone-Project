@@ -44,7 +44,7 @@ def calibration():
             #Draw and display the corners
             #
 
-    if(x == 2):
+    if(x == 1):
         f = open('cam_img', 'wb')
         pickle.dump(imgpoints, f)
         f.close()
