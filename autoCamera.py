@@ -2,7 +2,7 @@ import cv2
 import time
 import os
 
-def capture_images(cap, num_photos=16, interval=1, folder='captures'):
+def capture_images(cap, num_photos=16, interval=1, folder='captures', it = 0):
     os.makedirs(folder, exist_ok=True)  # Create folder if it doesn't exist
     
     for i in range(num_photos):
@@ -11,18 +11,17 @@ def capture_images(cap, num_photos=16, interval=1, folder='captures'):
             print(f"Error: Could not capture image {i+1}")
             break
         
+        time.sleep(interval)
+        
         filename = f"{folder}_b{i+1}.jpg"
         cv2.imwrite(f"{folder}//{filename}", frame)
         print(f"Captured {filename}")
         
-        time.sleep(interval)
 
-def capture(cap):
+def capture(cap, it):
     bits = 16
-    interval = 0
+    interval = 1.01
     second_interval = 8
-
-
 
     # Open the default camera
     if not cap.isOpened():
@@ -36,6 +35,9 @@ def capture(cap):
 
     elapsed_time = time_end - time_start
     print("Elapased Time: " + str(elapsed_time))
+    
+    
+    return it
 
     # Free Camera Resources
     #cap.release()

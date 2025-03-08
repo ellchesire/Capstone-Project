@@ -141,7 +141,7 @@ def main():
         objpoints_full.append(objp)
         imgpoints_full.append(np.array(project_coords, dtype=np.float32).reshape(-1, 1, 2))
         
-        if(y==1):
+        if(y==2):
             imgpoints_pic.append(np.array(project_coords, dtype=np.float32).reshape(-1, 1, 2))
             f = open('proj_img', 'wb')
             pickle.dump(imgpoints_pic, f)

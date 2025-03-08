@@ -19,6 +19,7 @@ class SimpleVideoImageDisplayApp:
         #events
         self.process_event = threading.Event()
         self.stop_event = threading.Event()
+        self.capture_event = threading.Event()
 
         # Styling
         self.root.configure(bg='black')  # Background color of the window
@@ -75,11 +76,14 @@ class SimpleVideoImageDisplayApp:
         self.root.grid_rowconfigure(1, weight=1)
         self.root.grid_rowconfigure(1, weight=0)
         self.graycode_files = []
+        
+        self.captured = 0
 
         # Load video and image
         self.image_path = "depth_map_output.jpg"
         self.load_video()
         self.load_image()
+        self.keypress()
 
 
         self.capture_thread = threading.Thread(target=self.capture_photos, daemon= True)
@@ -88,6 +92,7 @@ class SimpleVideoImageDisplayApp:
         # Start threads
         self.capture_thread.start()
         self.process_thread.start()
+      
 
 
 
@@ -116,8 +121,9 @@ class SimpleVideoImageDisplayApp:
 
     def capture_photos(self):
         while not self.stop_event.is_set():
+            self.capture_event.wait()
             print("Capturing")
-            capture(self.cap)
+            self.captured = capture(self.cap, self.captured)
             self.process_event.set()
             self.graycode_files = [os.path.join(self.filename, img) for img in os.listdir(self.filename) if img.endswith(".jpg")]
             if len(self.graycode_files) == 16:
@@ -127,7 +133,7 @@ class SimpleVideoImageDisplayApp:
 
     def process_images(self):
         while not self.stop_event.is_set():
-            self.process_event.wait(timeout=1)
+            self.process_event.wait()
 
             if len(self.graycode_files) == 16:
                 print("Processing")
@@ -160,13 +166,17 @@ class SimpleVideoImageDisplayApp:
         except Exception as e:
             # Show an error message if something goes wrong
             messagebox.showerror("Error", f"Could not save Plot:\n{str(e)}")
+    def keypress(self):
+         if keyboard.is_pressed('c'):
+            self.capture_event.set()
+         self.root.after(100, self.keypress)
 
 
 def main():
     filename = "PHOTOS"
 
     root = tk.Tk()
-    root.geometry("1280x600")  # Adjust the size of the window as needed
+    root.geometry("1180x500")  # Adjust the size of the window as needed
     app = SimpleVideoImageDisplayApp(root, filename)
 
     root.mainloop()
