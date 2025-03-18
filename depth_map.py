@@ -106,8 +106,9 @@ def calculate_depth_map(files):
     plt.close()
 
     return points
-
-
+# filename = "manual"
+# graycode_files = [os.path.join(filename, img) for img in os.listdir(filename) if img.endswith(".JPG")]
+# calculate_depth_map(graycode_files)
 
 
 # if __name__ == '__main__':
