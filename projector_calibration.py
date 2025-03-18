@@ -60,27 +60,11 @@ def project_img_coords(corners, homographies):
 
     return projector_corners
 
-#unneeded for now
-def proj_calibration(img_corners):
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-    objp = np.zeros((chessboard[0] * chessboard[1], 3), np.float32)
-    objp[:, :2] = np.mgrid[0:chessboard[0], 0:chessboard[1]].T.reshape(-1, 2)
-
-
-    objpoints = []  # 3D points in world space
-    imgpoints = [np.array(img_corners, dtype=np.float32).reshape(-1, 1, 2)]  # 2D points in image space
-
-    objpoints.append(objp)
-
-    print(f"Number of object points: {len(objpoints)}")
-    print(f"Number of image points: {len(imgpoints)}")
-
-    return objpoints, imgpoints
-
-
 
 
 def main():
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+
     objp = np.zeros((chessboard[0] * chessboard[1], 3), np.float32)
     objp[:, :2] = np.mgrid[0:chessboard[0], 0:chessboard[1]].T.reshape(-1, 2)
 
@@ -108,6 +92,7 @@ def main():
         gray = cv2.cvtColor(img_corner, cv2.COLOR_BGR2GRAY)
         gray = cv2.resize(gray, (width_final, height_final))
         ret, corners = cv2.findChessboardCorners(gray, (chessboard[0], chessboard[1]), None)
+        corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
         corners_squeezed = corners.squeeze()
 
         for x in range(M * 2):
