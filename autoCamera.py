@@ -10,13 +10,14 @@ def capture_images(cap, num_photos=16, interval=1, folder='captures', it = 0):
         if not ret:
             print(f"Error: Could not capture image {i+1}")
             break
-        
-        time.sleep(interval)
-        
+        time.sleep(interval) 
         filename = f"{folder}_b{i+1}.jpg"
         cv2.imwrite(f"{folder}//{filename}", frame)
         print(f"Captured {filename}")
         
+        
+        #cv2.waitKey(1000)
+
 
 def capture(cap, it):
     bits = 16
@@ -28,15 +29,9 @@ def capture(cap, it):
         print("Error: Could not open camera.")
         exit
 
-    time_start = time.time()
     capture_images(cap, bits, interval, "PHOTOS")
     #capture_images(cap, bits, second_interval, "PHOTOS")
-    time_end = time.time()
-
-    elapsed_time = time_end - time_start
-    print("Elapased Time: " + str(elapsed_time))
-    
-    
+  
     return it
 
     # Free Camera Resources

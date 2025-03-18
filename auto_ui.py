@@ -169,6 +169,9 @@ class SimpleVideoImageDisplayApp:
     def keypress(self):
          if keyboard.is_pressed('c'):
             self.capture_event.set()
+         if keyboard.is_pressed('s'):
+             self.capture_event.clear()
+             print("Program Paused")
          self.root.after(100, self.keypress)
 
 
