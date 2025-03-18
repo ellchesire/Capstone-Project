@@ -9,6 +9,9 @@ from depth_map import calculate_depth_map
 
 class SimpleVideoImageDisplayApp:
     def __init__(self, root, filename):
+        
+        self.captured = 0
+
         self.root = root
         self.root.title("Structured 3D Light Scanner")
 
@@ -47,6 +50,7 @@ class SimpleVideoImageDisplayApp:
         self.check_keypress()
 
         self.graycode_files = []
+        
 
     def load_video(self):
         self.cap = cv2.VideoCapture(0)
@@ -77,6 +81,7 @@ class SimpleVideoImageDisplayApp:
             capture(self.cap)
 
             self.graycode_files = [os.path.join(self.filename, img) for img in os.listdir(self.filename) if img.endswith(".jpg")]
+            self.captured = 1
             time.sleep(0.5)
     def process_images(self):
         print("Processing")
@@ -86,10 +91,10 @@ class SimpleVideoImageDisplayApp:
         print(elapstedtime)
 
 
-        for name in os.listdir(self.filename):
-            if name.endswith('.jpg'):
-                os.remove(os.path.join(self.filename, name))
-                print(f"Deleted: {name}")
+        # for name in os.listdir(self.filename):
+        #     if name.endswith('.jpg'):
+        #         os.remove(os.path.join(self.filename, name))
+        #         print(f"Deleted: {name}")
 
         self.load_image()
 
@@ -99,7 +104,7 @@ class SimpleVideoImageDisplayApp:
         elif keyboard.is_pressed('s'):
             print("Exiting application.")
             self.root.quit()
-        elif len(os.listdir(self.filename)) == 16:
+        elif len(os.listdir(self.filename)) == 16 and self.captured == 1:
             self.process_images()
 
         self.root.after(100, self.check_keypress)
@@ -108,7 +113,7 @@ def main():
     filename = "PHOTOS"
 
     root = tk.Tk()
-    root.geometry("1280x720")  # Adjust the size of the window as needed
+    root.geometry("800x520")  # Adjust the size of the window as needed
     app = SimpleVideoImageDisplayApp(root, filename)
     root.mainloop()
 
