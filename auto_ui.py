@@ -59,7 +59,7 @@ class SimpleVideoImageDisplayApp:
                            width=15,
                            wraplength=100)
 
-        self.button.grid(row=2, column=1, sticky="se", padx=20, pady=20)
+        self.button.grid(row=2, column=1, sticky="se", padx=10, pady=10)
 
 
         # Adding titles
@@ -179,7 +179,7 @@ def main():
     filename = "PHOTOS"
 
     root = tk.Tk()
-    root.geometry("1180x500")  # Adjust the size of the window as needed
+    root.geometry("1180x570")  # Adjust the size of the window as needed
     app = SimpleVideoImageDisplayApp(root, filename)
 
     root.mainloop()

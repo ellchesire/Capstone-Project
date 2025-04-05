@@ -21,7 +21,7 @@ def capture_images(cap, num_photos=16, interval=1, folder='captures', it = 0):
 
 def capture(cap, it):
     bits = 16
-    interval = 1.01
+    interval = 1.00
     second_interval = 8
 
     # Open the default camera
